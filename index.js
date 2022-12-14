@@ -177,12 +177,53 @@
 //     console.log(`Server is running ${port}:${portName}`)
 // })
 
-const express = require('express')
+// const express = require('express')
+// const app = express()
+// const port = 3000
+// const portName = '127.0.0.1'
+
+
+
+
+
+// app.use(express.static('public'))
+
+// app.get('/', (req, res) => {
+//     res.sendFile(__dirname+"/index.html")
+// })
+
+// app.post('/register', (req, res) => {
+//     const fullName = req.body.fullName
+//     const age = req.body.age
+//     res.send(`<h1>My name is ${fullName} and ${age} years old</h1>`)
+// })
+
+// app.use((req, res, next) => {
+//     res.send('404 Page Not Found')
+//     next()
+// })
+
+// app.listen(port, portName, () => {
+//     console.log(`Server is runnig ${portName}:${port}`)
+// })
+
+
+const express = require ('express')
+const { getUser, saveUser, pageNotFound } = require('./controler/user.control')
+
 const app = express()
-const port = 3000
-const portName = '127.0.0.1'
+const PORT = 3000
+const serverName = '127.0.0.1'
+
+app.use(express.urlencoded({extended: true}))
+const router = require('./routes/user.rout')
+app.use(router)
+
 
 const bodyParser = require('body-parser')
+
+
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -191,24 +232,13 @@ app.use(bodyParser.json())
 
 
 
-app.use(express.static('public'))
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname+"/index.html")
+
+
+app.get('/user', getUser)
+app.post('/user', saveUser)
+app.use(pageNotFound)
+
+app.listen(PORT, serverName, () => {
+    console.log(`Server is Runnitn ${serverName}:${PORT}`)
 })
-
-app.post('/register', (req, res) => {
-    const fullName = req.body.fullName
-    const age = req.body.age
-    res.send(`<h1>My name is ${fullName} and ${age} years old</h1>`)
-})
-
-app.use((req, res, next) => {
-    res.send('404 Page Not Found')
-    next()
-})
-
-app.listen(port, portName, () => {
-    console.log(`Server is runnig ${portName}:${port}`)
-})
-
