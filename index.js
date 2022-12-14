@@ -189,6 +189,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+
+
+app.use(express.static('public'))
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname+"/index.html")
 })
@@ -197,6 +201,11 @@ app.post('/register', (req, res) => {
     const fullName = req.body.fullName
     const age = req.body.age
     res.send(`<h1>My name is ${fullName} and ${age} years old</h1>`)
+})
+
+app.use((req, res, next) => {
+    res.send('404 Page Not Found')
+    next()
 })
 
 app.listen(port, portName, () => {
